@@ -1,23 +1,21 @@
 <template>
   <main>
     <div class="wrapper">
-      <div class="logo-container">
-        <span class="welcome">welcome to</span>
-        <div class="logo">
-          <span>gatwick</span><i>GO!</i>
+      <div>
+        <div class="logo-container">
+          <span class="welcome">welcome to</span>
+          <div class="logo">
+            <span>gatwick</span><i>GO!</i>
+          </div>
         </div>
+
+        <div class="lines"></div>
+
+        <a href="#" class="start-button">
+          <RouterLink to="/about">Begin Journey</RouterLink>
+          <span class="material-symbols-outlined"> airport_shuttle </span>
+        </a>
       </div>
-
-      <a href="#" class="start-button">
-        <span class="material-symbols-outlined"> airport_shuttle </span>
-        <RouterLink to="/about">Enter Gate</RouterLink>
-      </a>
-
-      <i class="tagline">
-        Your journey starts here
-      </i>
-
-      <div class="lines"></div>
     </div>
   </main>
 </template>
@@ -39,25 +37,24 @@
   color: grey;
 }
 
+.logo-container {
+  width: 33%;
+}
+
 .logo {
-  font-size: 48px;
+  font-size: 60px;
   font-weight: bolder;
   letter-spacing: -1px;
   color: white;
-  margin-bottom: 50%;
+  line-height: 72px;
+  height: 72px;
+  display: flex;
 }
 
 .logo i {
   color: var(--gatwick-blue);
   font-style: italic;
-}
-
-.tagline {
-  color: var(--text-muted);
-  margin-top: 8px;
-  font-size: 16px;
-  text-transform: uppercase;
-  margin: 1% 0;
+  font-size: 84px;
 }
 
 .start-button {
@@ -69,7 +66,7 @@
   background: linear-gradient(90deg, var(--gatwick-blue), var(--gatwick-blue-light));
   border-radius: 40px;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 24px;
   color: white;
   text-decoration: none;
   transition: 0.25s ease;
@@ -88,8 +85,10 @@
 }
 
 .lines {
-  width: 33%;
+  width: 100%;
   background-color: var(--gatwick-blue);
   height: 1px;
+  margin-top: 2.5%;
+  margin-bottom: 15%;
 }
 </style>

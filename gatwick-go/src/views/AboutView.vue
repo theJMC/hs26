@@ -24,7 +24,7 @@ export default {
       p.draw = () => {
         //many plane things could go here
         p.fill(255, 0, 0);
-        p.ellipse(p.width * (this.xAxis / 100), p.height / 2, 50, 50);
+        p.ellipse(p.width * (this.xAxis / 100), p.height * 0.75, 50, 50);
       };
     };
     this.p5Instance = new window.p5(sketch, this.$refs.canvasContainer);
@@ -58,18 +58,22 @@ export default {
 
 .button {
   position: absolute;
-  bottom: 24px;
+  bottom: 12px;
   height: 25%;
-  background: red;
+  font-size: 100px;
+  background: var(--gatwick-dark);
+  color: white;
   border: none;
   padding: 36px;
 }
 
 .button-left {
-  left: 24px; 
+  left: 12px; 
+  border-top-right-radius: 25px;
 }
 
 .button-right {
-  right: 24px; 
+  right: 12px; 
+  border-top-left-radius: 25px;
 }
 </style>
