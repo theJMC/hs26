@@ -22,12 +22,14 @@ export default {
       p5Instance: null,
       xAxis: 50,
       score: 12,
+      planes: [],
+      MAX_PLANES: 1
     };
   },
   mounted() {
     const sketch = (p) => {
       let bus;
-      let plane;
+      let planes;
 
       p.preload = () => {
         bus = {
@@ -35,30 +37,31 @@ export default {
           left: p.loadImage('../../img/bus_left.png'),
           right: p.loadImage('../../img/bus_right.png')
         }
-        plane = p.loadImage('../../img/easyjet.png')
+        planes = [
+          p.loadImage('../../img/easyjet.png'),
+          p.loadImage('../../img/ryanair.png'),
+          p.loadImage('../../img/tui.png'),
+          p.loadImage('../../img/ba.png')
+        ]
       }
 
       p.setup = () => {
         p.createCanvas(p.windowWidth - 24, p.windowHeight - 24);
         p.background(200);
         p.rectMode(p.CENTER);
-        p.imageMode(p.CENTER)
+        p.imageMode(p.CENTER);
+        p.angleMode(p.DEGREES);
       };
 
       p.draw = () => {
         p.background(200);
-
+        p.fill(255, 0, 0, 127); // TEMP FOR COLLISION RECTANGLES
         // user bus
-        p.fill(255, 0, 0);
-        // BASE ==> p.rect(p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
+        p.rect(p.width * (this.xAxis / 100), p.height * 0.75, 200, 300); // TEMP FOR COLLISION RECTANGLES
         p.image(bus.reg, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
 
-        // BASE ==>
-        p.fill(255, 0, 0, 127);
-        let planeStart = 400
-        p.image(plane, planeStart, 400, 450, 450)
-        p.rect(planeStart + 25, 400, 25, 300);
-        p.rect(planeStart + 10, 395, 400, 90);
+        //planes
+        this.checkPlanes(p, planes)
       };
     };
     this.p5Instance = new window.p5(sketch, this.$refs.canvasContainer);
@@ -77,6 +80,56 @@ export default {
     },
     goRight() {
       this.xAxis++
+    },
+    checkPlanes(p, loadedPlanes) {
+      // Add plane
+      if (this.planes.length < this.MAX_PLANES) {
+        let planeChance = p.random(0, 25);
+        console.log(planeChance)
+        if (Math.ceil(planeChance) == 13) {
+          // Choose a random plane
+          let planeChoice = p.random(loadedPlanes);
+          let directionChoice = p.random(['x', 'y', 'd'])
+          this.planes.push({
+            'image': planeChoice, 
+            'xAxis': 0,
+            'yAxis': 0, 
+            'direction': directionChoice
+          })
+        }
+      }
+
+      // Update planes
+      if (this.planes.length >= 1){
+        this.planes.forEach(plane => {
+          //TODO set plane angle
+          p.rect(plane.xAxis, plane.yAxis, 400, 175); // TEMP FOR COLLISION RECTANGLES
+          p.rect(plane.xAxis - 15, plane.yAxis, 100, 250); // TEMP FOR COLLISION RECTANGLES
+          p.image(plane.image, plane.xAxis, plane.yAxis, 450, 350)
+          //TODO remove angle
+
+          // Update plane co-ords
+          switch(plane.direction) {
+            case 'x':
+              plane.xAxis++
+              break;
+            case 'y':
+              plane.yAxis++
+              break;
+            default:
+              plane.xAxis++
+              plane.yAxis++
+          }
+
+          // Remove plane if off screen fully
+          if (plane.xAxis > p.width + 200 || plane.yAxis > p.height + 175) {
+            const index = this.planes.indexOf(plane);
+            if (index > -1) {
+              this.planes.splice(index, 1);
+            }
+          }
+        })
+      }
     }
   },
   beforeUnmount() {
