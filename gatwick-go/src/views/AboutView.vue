@@ -60,7 +60,7 @@ export default {
         p.background(200);
         p.fill(255, 0, 0, 127); // TEMP FOR COLLISION RECTANGLES
         // user bus
-        p.rect(p.width * (this.xAxis / 100), p.height * 0.75, 200, 300); // TEMP FOR COLLISION RECTANGLES
+        //p.rect(p.width * (this.xAxis / 100), p.height * 0.75, 200, 300); // TEMP FOR COLLISION RECTANGLES
         p.image(bus.reg, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
 
         //planes
@@ -97,17 +97,23 @@ export default {
       // Add plane
       if (this.planes.length < this.MAX_PLANES) {
         let planeChance = p.random(0, 25);
-        console.log(planeChance)
         if (Math.ceil(planeChance) == 13) {
           // Choose a random plane
           let planeChoice = p.random(loadedPlanes);
           let directionChoice = p.random(['x', 'y', 'd'])
+          let randomizeX = p.random() < 0.5; // 50% chance
+          if (directionChoice == 'x'){
+            randomizeX = false
+          } else if (directionChoice == 'y'){
+            randomizeX = true
+          }
+
           this.planes.push({
-            'image': planeChoice, 
-            'xAxis': 0,
-            'yAxis': 0, 
+            'image': planeChoice,
+            'xAxis': randomizeX ? p.random(0, p.width) : 0,   // random or centered
+            'yAxis': !randomizeX ? p.random(0, p.height) : 0, // random or centered
             'direction': directionChoice
-          })
+          });
         }
       }
 
