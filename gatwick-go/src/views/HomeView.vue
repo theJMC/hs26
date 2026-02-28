@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="wrapper">
-      <div>
+      <div class="wrapper-major">
         <div class="logo-container">
           <span class="welcome">welcome to</span>
           <div class="logo">
@@ -16,6 +16,9 @@
           <span class="material-symbols-outlined"> airport_shuttle </span>
         </a>
       </div>
+      <div class="wrapper-minor">
+        <img src="../../public/img/bus.png" alt="Bus Skin" width="100%">
+      </div>
     </div>
   </main>
 </template>
@@ -26,10 +29,23 @@
 .wrapper {
   background: linear-gradient(135deg, var(--gatwick-dark), var(--gatwick-navy));
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  width: 100%;
+  gap: 5%;
+  padding: 5%;
+}
+
+.wrapper-major {
+  flex: 1
+}
+
+.wrapper-minor {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .welcome {
