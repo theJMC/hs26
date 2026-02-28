@@ -5,7 +5,10 @@
         <div class="logo-container">
           <span class="welcome">welcome to</span>
           <div class="logo">
-            <span>gatwick</span><i>GO!</i>
+            <span>gatwick</span>
+            <i>
+              <img src="../../public/img/logo.png" alt="Bus Skin" width="100%">
+              O!</i>
           </div>
         </div>
 
