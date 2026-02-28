@@ -74,6 +74,7 @@
   color: var(--gatwick-blue);
   font-style: italic;
   font-size: 84px;
+  display: flex;
 }
 
 .start-button {
