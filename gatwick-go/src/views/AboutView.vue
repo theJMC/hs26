@@ -25,7 +25,8 @@ export default {
       planes: [],
       MAX_PLANES: 1,
       PLANE_MINUS: 4,
-      POINTS_PER_SECOND: 0.1
+      POINTS_PER_SECOND: 0.1,
+      PLANE_SPEED: 2
     };
   },
   mounted() {
@@ -113,24 +114,29 @@ export default {
       // Update planes
       if (this.planes.length >= 1){
         this.planes.forEach(plane => {
-          //TODO set plane angle
-          p.rect(plane.xAxis, plane.yAxis, 400, 175); // TEMP FOR COLLISION RECTANGLES
-          p.rect(plane.xAxis - 15, plane.yAxis, 100, 250); // TEMP FOR COLLISION RECTANGLES
-          p.image(plane.image, plane.xAxis, plane.yAxis, 450, 350)
-          //TODO remove angle
-
-          // Update plane co-ords
-          switch(plane.direction) {
+          let angle = 0;
+          switch (plane.direction) {
             case 'x':
-              plane.xAxis++
+              angle = 0;
+              plane.xAxis+=this.PLANE_SPEED
               break;
             case 'y':
-              plane.yAxis++
+              angle = 90;
+              plane.yAxis+=this.PLANE_SPEED
               break;
-            default:
-              plane.xAxis++
-              plane.yAxis++
+            case 'd':
+              angle = 25;
+              plane.xAxis+=this.PLANE_SPEED
+              plane.yAxis+=this.PLANE_SPEED
+              break;
           }
+
+          // Draw plane with rotation
+          p.push();
+          p.translate(plane.xAxis, plane.yAxis);
+          p.rotate(angle);
+          p.image(plane.image, 0, 0, 450, 350);
+          p.pop();
 
           // Check collision
           const busX = p.width * (this.xAxis / 100);
