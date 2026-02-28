@@ -21,9 +21,11 @@ export default {
     return {
       p5Instance: null,
       xAxis: 50,
-      score: 12,
+      score: 0,
       planes: [],
-      MAX_PLANES: 1
+      MAX_PLANES: 1,
+      PLANE_MINUS: 4,
+      POINTS_PER_SECOND: 0.1
     };
   },
   mounted() {
@@ -62,13 +64,22 @@ export default {
 
         //planes
         this.checkPlanes(p, planes)
+
+        this.score+=this.POINTS_PER_SECOND
+        if (this.score <= 0) {
+          this.score = 0
+        }
       };
     };
     this.p5Instance = new window.p5(sketch, this.$refs.canvasContainer);
   },
   computed: {
     scoreArray() {
-      return String(this.score)
+      let rounded = Math.ceil(this.score);
+      if (rounded <= 0) {
+        rounded = 0;
+      }
+      return String(rounded)
         .padStart(6, '0')
         .split('')
         .map(Number);
@@ -119,6 +130,37 @@ export default {
             default:
               plane.xAxis++
               plane.yAxis++
+          }
+
+          // Check collision
+          const busX = p.width * (this.xAxis / 100);
+          const busY = p.height * 0.75;
+          const busW = 200;
+          const busH = 300;
+          const planeW = 400;
+          const planeH = 175;
+          const busLeft   = busX - busW / 2;
+          const busRight  = busX + busW / 2;
+          const busTop    = busY - busH / 2;
+          const busBottom = busY + busH / 2;
+          const planeLeft   = plane.xAxis - planeW / 2;
+          const planeRight  = plane.xAxis + planeW / 2;
+          const planeTop    = plane.yAxis - planeH / 2;
+          const planeBottom = plane.yAxis + planeH / 2;
+
+          // Check overlap
+          const overlapX = Math.max(0, Math.min(busRight, planeRight) - Math.max(busLeft, planeLeft));
+          const overlapY = Math.max(0, Math.min(busBottom, planeBottom) - Math.max(busTop, planeTop));
+
+          if (overlapX > 0 && overlapY > 0) {
+            // Calculate center of overlapping area
+            const collisionX = Math.max(busLeft, planeLeft) + overlapX / 2;
+            const collisionY = Math.max(busTop, planeTop) + overlapY / 2;
+            // Draw explosion exactly at impact zone
+            p.textSize(80);
+            p.textAlign(p.CENTER, p.CENTER);
+            p.text("💥", collisionX, collisionY);
+            this.score-=this.PLANE_MINUS
           }
 
           // Remove plane if off screen fully
