@@ -1,5 +1,9 @@
 <template>
   <div ref="canvasContainer">
+    <div class="score-boxes">
+      <span v-for="(s, index) in scoreArray" :key="index">{{ s }}</span>
+    </div>
+    <div class="boarding-class"> A </div>
     <button class="button button-left" @click="goLeft"> < </button>
     <button class="button button-right" @click="goRight"> > </button>
   </div>
@@ -11,7 +15,8 @@ export default {
   data() {
     return {
       p5Instance: null,
-      xAxis: 50
+      xAxis: 50,
+      score: 23,
     };
   },
   mounted() {
@@ -28,6 +33,15 @@ export default {
       };
     };
     this.p5Instance = new window.p5(sketch, this.$refs.canvasContainer);
+  },
+  computed: {
+    scoreArray() {
+      // Convert number to string, split into chars, then map back to numbers
+      return String(this.score)
+        .padStart(5, '0') // optional: always show 5 digits
+        .split('')
+        .map(Number);
+    }
   },
   methods: {
     goLeft() {
@@ -75,5 +89,44 @@ export default {
 .button-right {
   right: 12px; 
   border-top-left-radius: 25px;
+}
+
+.score-boxes {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  padding: 12px 24px;
+  border-bottom-right-radius: 12px;
+  border-top-right-radius: 12px;
+  height: min-content;
+  position: absolute;
+  left: 0;
+  top: 24px;
+  background: var(--gatwick-dark);
+  width: max-content;
+}
+
+.score-boxes span {
+  height: min-content;
+  background: white;
+  font-size: 48px;
+  padding: 0 6px;
+}
+
+.boarding-class {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  padding: 12px 24px;
+  border-bottom-right-radius: 12px;
+  border-top-right-radius: 12px;
+  height: min-content;
+  position: absolute;
+  left: 0;
+  top: 120px;
+  background: var(--gatwick-dark);
+  color: white;
+  font-size: 60px;
+  width: max-content;
 }
 </style>
