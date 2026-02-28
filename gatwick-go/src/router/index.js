@@ -14,6 +14,11 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: AboutView,
+      props: { 
+        'skin': '',
+        'boardingGroup': 'B',
+        'players': []
+      }
     },
     {
       path: '/play',
