@@ -3,7 +3,7 @@
     <div class="score-boxes">
       <span v-for="(s, index) in scoreArray" :key="index">{{ s }}</span>
     </div>
-    <div class="boarding-class"> A </div>
+    <div class="boarding-class"> {{ boardingGroup }} </div>
     <button class="button button-left" @click="goLeft"> < </button>
     <button class="button button-right" @click="goRight"> > </button>
   </div>
@@ -12,33 +12,52 @@
 <script>
 export default {
   name: "P5Canvas",
+  props: {
+    skin: String,
+    boardingGroup: String,
+    players: Array  
+  },
   data() {
     return {
       p5Instance: null,
       xAxis: 50,
-      score: 23,
+      score: 12,
     };
   },
   mounted() {
     const sketch = (p) => {
+      let bus;
+
+      p.preload = () => {
+        bus = {
+          reg: p.loadImage('../../img/bus.png'),
+          left: p.loadImage('../../img/bus_left.png'),
+          right: p.loadImage('../../img/bus_right.png')
+        }
+      }
+
       p.setup = () => {
         p.createCanvas(p.windowWidth - 24, p.windowHeight - 24);
         p.background(200);
+        p.rectMode(p.CENTER);
+        p.imageMode(p.CENTER)
       };
 
       p.draw = () => {
-        //many plane things could go here
+        p.background(200);
+
+        // user bus
         p.fill(255, 0, 0);
-        p.ellipse(p.width * (this.xAxis / 100), p.height * 0.75, 50, 50);
+        // BASE ==> p.rect(p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
+        p.image(bus.reg, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
       };
     };
     this.p5Instance = new window.p5(sketch, this.$refs.canvasContainer);
   },
   computed: {
     scoreArray() {
-      // Convert number to string, split into chars, then map back to numbers
       return String(this.score)
-        .padStart(5, '0') // optional: always show 5 digits
+        .padStart(6, '0')
         .split('')
         .map(Number);
     }

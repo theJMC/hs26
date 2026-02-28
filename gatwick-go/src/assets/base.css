@@ -1,14 +1,12 @@
-/* color palette from <https://github.com/vuejs/theme> */
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
 
 :root {
   --main-blue: #1c488b;
   --teal: #4ca0a1;
-  /*temp*/
   --gatwick-dark: #0b1f2a;
   --gatwick-navy: #102c3a;
-  --gatwick-blue: #00a0b2;
-  --gatwick-blue-light: #00c2d1;
+  --gatwick-blue: #4ca0a1;
+  --gatwick-blue-light: #61b4b5;
   --text-light: #eaf6f8;
   --text-muted: #8faab3;
 }
