@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airport Gate Control</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #f9f9f9; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #007bff; color: white; }
+        .delete-btn { 
+            background-color: #dc3545; color: white; border: none; 
+            padding: 8px 12px; cursor: pointer; border-radius: 4px; 
+        }
+        .delete-btn:hover { background-color: #a71d2a; }
+    </style>
+</head>
+<body>
+
+    <h2>Active Airport Gates</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Gate ID</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for gate in gates %}
+            <tr id="gate-row-{{ gate }}">
+                <td>{{ gate }}</td>
+                <td>
+                    <a href="/gate/{{ gate }}" style="margin-right: 10px;">View Players</a>
+                    <button class="delete-btn" onclick="confirmDelete('{{ gate }}')">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        async function confirmDelete(gateId) {
+            if (!confirm("Are you sure you want to decommission this gate?")) return;
+
+            try {
+                const response = await fetch(`/${gateId}/delete`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    // Remove the row from the table instantly without refreshing
+                    const row = document.getElementById(`gate-row-${gateId}`);
+                    row.remove();
+                } else {
+                    alert("Error: Could not delete gate.");
+                }
+            } catch (err) {
+                console.error("Connection error:", err);
+            }
+        }
+    </script>
+
+</body>
+</html>
