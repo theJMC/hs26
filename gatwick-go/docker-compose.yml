@@ -1,0 +1,5 @@
+services:
+  gatwick:
+    build: .
+    ports:
+      - "8080:80"
