@@ -9,6 +9,9 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      props: { 
+        'skin': '',
+      }
     },
     {
       path: '/about',

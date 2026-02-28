@@ -27,6 +27,7 @@ export default {
   mounted() {
     const sketch = (p) => {
       let bus;
+      let plane;
 
       p.preload = () => {
         bus = {
@@ -34,6 +35,7 @@ export default {
           left: p.loadImage('../../img/bus_left.png'),
           right: p.loadImage('../../img/bus_right.png')
         }
+        plane = p.loadImage('../../img/easyjet.png')
       }
 
       p.setup = () => {
@@ -50,6 +52,13 @@ export default {
         p.fill(255, 0, 0);
         // BASE ==> p.rect(p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
         p.image(bus.reg, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
+
+        // BASE ==>
+        p.fill(255, 0, 0, 127);
+        let planeStart = 400
+        p.image(plane, planeStart, 400, 450, 450)
+        p.rect(planeStart + 25, 400, 25, 300);
+        p.rect(planeStart + 10, 395, 400, 90);
       };
     };
     this.p5Instance = new window.p5(sketch, this.$refs.canvasContainer);

@@ -7,7 +7,7 @@
           <div class="logo">
             <span>gatwick</span>
             <i>
-              <img src="../../public/img/logo.png" alt="Bus Skin" width="100%">
+              <img src="../../public/img/logo.png" alt="G" width="100%">
               O!</i>
           </div>
         </div>
@@ -26,6 +26,7 @@
   </main>
 </template>
 
+<!-- need to do images here in probs -->
 
 <style scoped>
 
