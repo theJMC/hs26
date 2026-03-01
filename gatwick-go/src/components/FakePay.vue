@@ -34,7 +34,9 @@
           class="fingerprint"
           :class="{ scanning: state === 'auth' }"
           @click="startFakeAuth"
-        ></div>
+        >
+          <span class="material-symbols-outlined fingerprint-ins"> fingerprint </span>
+        </div>
 
         <p v-if="state === 'idle'">
           Present Fingerprint To Authenticate
@@ -197,11 +199,21 @@ export default {
   margin: 0 auto 12px;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.fingerprint-ins {
+  font-size: 32px;
+  line-height: 1;
 }
 
 .fingerprint.scanning {
   border-color: #4caf50;
   box-shadow: 0 0 15px #4caf50;
+  color: #4caf50;
 }
 
 .slide-bar {
