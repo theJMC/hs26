@@ -273,7 +273,7 @@ export default {
 .score-boxes span {
   height: min-content;
   background: white;
-  font-size: 48px;
+  3rem;
   padding: 0 6px;
 }
 
@@ -290,7 +290,7 @@ export default {
   top: 120px;
   background: var(--gatwick-dark);
   color: white;
-  font-size: 60px;
+  3.75rem;
   width: max-content;
 }
 </style>

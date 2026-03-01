@@ -133,7 +133,7 @@ export default {
     padding: 12px 36px;
     background: linear-gradient(90deg, var(--gatwick-blue), var(--gatwick-blue-light));
     font-weight: 600;
-    font-size: 24px;
+    1.5rem;
     color: white;
     text-decoration: none;
     transition: 0.25s ease;
@@ -153,7 +153,7 @@ export default {
 }
 
 .title {
-  font-size: 60px;
+  3.75rem;
   font-weight: bolder;
   letter-spacing: -1px;
   color: white;
@@ -164,7 +164,7 @@ export default {
 }
 
 .subtitle {
-  font-size: 36px;
+  2.25rem;
   font-weight: bolder;
   letter-spacing: -1px;
   color: var(--text-muted);
@@ -191,7 +191,7 @@ export default {
   background: linear-gradient(90deg, var(--gatwick-blue), var(--gatwick-blue-light));
   border-radius: 40px;
   font-weight: 600;
-  font-size: 24px;
+  1.5rem;
   color: white;
   text-decoration: none;
   transition: 0.25s ease;
@@ -225,6 +225,6 @@ export default {
   font-size: 16px;
   text-transform: uppercase;
   margin: 1% 0;
-  font-size: 12px;
+  0.75rem;
 }
 </style>
