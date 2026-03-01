@@ -35,6 +35,10 @@ export default {
     const sketch = (p) => {
       let bus;
       let planes;
+      let bg;
+
+      let worldOffset;
+      let playerPos;
 
       p.preload = () => {
         bus = {
@@ -48,6 +52,7 @@ export default {
           p.loadImage('../../img/tui.png'),
           p.loadImage('../../img/ba.png')
         ]
+        bg = p.loadImage('../../bg-layers/bg.png')
       }
 
       p.setup = () => {
@@ -56,6 +61,10 @@ export default {
         p.rectMode(p.CENTER);
         p.imageMode(p.CENTER);
         p.angleMode(p.DEGREES);
+
+        worldOffset = p.createVector(0, 0);
+
+        playerPos = p.createVector(p.width / 2, p.height * 0.75);
 
         var url = `https://api.gatwickgo.uk/${this.gateID}/new_player?name=${this.playerID}`;
 
@@ -74,6 +83,10 @@ export default {
         // user bus
         //p.rect(p.width * (this.xAxis / 100), p.height * 0.75, 200, 300); // TEMP FOR COLLISION RECTANGLES
         p.image(bus.reg, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
+
+        p.push();
+        p.translate(worldOffset.x, worldOffset.y);
+        p.image(bg, 0,0)
 
         //planes
         this.checkPlanes(p, planes)
