@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
 
+const PLAYER_ID = crypto.randomUUID()
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -18,7 +20,7 @@ const router = createRouter({
       name: 'about',
       component: AboutView,
       props: { 
-        'playerID': crypto.randomUUID(),
+        'playerID': PLAYER_ID,
         'skin': '',
         'boardingGroup': 'B',
         'players': []
