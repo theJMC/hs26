@@ -25,6 +25,7 @@ export default {
       score: 0,
       planes: [],
       boardingGroup: "E",
+      playerHeading: "n",
       MAX_PLANES: 1,
       PLANE_MINUS: 4,
       POINTS_PER_SECOND: 0.1,
@@ -39,6 +40,8 @@ export default {
 
       let worldOffset;
       let playerPos;
+
+      // n = +y, s = -y, e = +x, w = -x
 
       p.preload = () => {
         bus = {
@@ -79,19 +82,37 @@ export default {
 
       p.draw = () => {
         p.background(200);
+        p.push();
+        p.translate(worldOffset.x, worldOffset.y);
+        p.image(bg, 1250,450, 12800, 6400);
+        p.pop();
         p.fill(255, 0, 0, 127); // TEMP FOR COLLISION RECTANGLES
         // user bus
         //p.rect(p.width * (this.xAxis / 100), p.height * 0.75, 200, 300); // TEMP FOR COLLISION RECTANGLES
         p.image(bus.reg, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
 
-        p.push();
-        p.translate(worldOffset.x, worldOffset.y);
-        p.image(bg, 0,0)
+        
 
         //planes
         this.checkPlanes(p, planes)
 
         this.score+=this.POINTS_PER_SECOND
+
+        switch (this.playerHeading) {
+          case 'n':
+            worldOffset.y += 1
+            break;
+          case 's':
+              worldOffset.y -= 1
+              break;
+          case 'e':
+              worldOffset.x -= 1
+              break;
+          case 'w':
+              worldOffset.x += 1
+              break;
+        }
+
         if (this.score <= 0) {
           this.score = 0
         }
@@ -130,10 +151,12 @@ export default {
   },
   methods: {
     goLeft() {
-      this.xAxis--
+      // this.xAxis--
+      this.playerHeading = "w"
     },
     goRight() {
-      this.xAxis++
+      // this.xAxis++
+      this.playerHeading = "e"
     },
     checkPlanes(p, loadedPlanes) {
       // Add plane
@@ -166,17 +189,38 @@ export default {
           switch (plane.direction) {
             case 'x':
               angle = 0;
-              plane.xAxis+=this.PLANE_SPEED
+              if (this.playerHeading == "w") {
+                plane.xAxis+=this.PLANE_SPEED-1
+              } else if (this.playerHeading == "e") {
+                plane.xAxis-=this.PLANE_SPEED-1
+              } else {
+                plane.xAxis+=this.PLANE_SPEED
+              }
               break;
             case 'y':
               angle = 90;
-              plane.yAxis+=this.PLANE_SPEED
+
+              if (this.playerHeading == "n") {
+                plane.yAxis+=this.PLANE_SPEED-1
+              } else if (this.playerHeading == "s") {
+                plane.yAxis-=this.PLANE_SPEED-1
+              } else {
+                plane.yAxis+=this.PLANE_SPEED
+              }
               break;
             case 'd':
               angle = 25;
-              plane.xAxis+=this.PLANE_SPEED
-              plane.yAxis+=this.PLANE_SPEED
-              break;
+              if (this.playerHeading == "n" || this.playerHeading == "w") {
+                plane.xAxis+=this.PLANE_SPEED-1
+                plane.yAxis+=this.PLANE_SPEED-1
+              } else if (this.playerHeading == "s" || this.playerHeading == "e") {
+                plane.xAxis-=this.PLANE_SPEED-1
+                plane.yAxis-=this.PLANE_SPEED-1
+              } else {
+                plane.xAxis+=this.PLANE_SPEED
+                plane.yAxis+=this.PLANE_SPEED
+                break;
+              }
           }
 
           // Draw plane with rotation
