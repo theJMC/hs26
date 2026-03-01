@@ -16,7 +16,6 @@ export default {
     playerID: String,
     gateID: String,
     skin: String,
-    boardingGroup: String,
     players: Array  
   },
   data() {
@@ -25,6 +24,7 @@ export default {
       xAxis: 50,
       score: 0,
       planes: [],
+      boardingGroup: "E",
       MAX_PLANES: 1,
       PLANE_MINUS: 4,
       POINTS_PER_SECOND: 0.1,
@@ -90,7 +90,11 @@ export default {
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }
-            console.log(response.json());
+            let responseData = response.json();
+            responseData.then(data => {
+              this.boardingGroup = data.boarding_group
+              console.log(data);
+            })
           })
           console.log(this.playerID)
           console.log(this.score)
