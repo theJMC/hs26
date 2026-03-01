@@ -229,7 +229,7 @@ export default {
 
 .tagline {
   position: absolute;
-  bottom: 24px;
+  bottom: 6px;
   left: 5%;
   color: var(--text-muted);
   margin-top: 8px;
