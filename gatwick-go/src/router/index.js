@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
 
 const PLAYER_ID = crypto.randomUUID()
+let playerSkin = 'bus'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,7 +13,7 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       props: { 
-        'skin': '',
+        'skin': playerSkin,
       }
     },
     {
@@ -21,7 +22,7 @@ const router = createRouter({
       component: AboutView,
       props: { 
         'playerID': PLAYER_ID,
-        'skin': '',
+        'skin': playerSkin,
         'boardingGroup': 'B',
         'players': []
       }

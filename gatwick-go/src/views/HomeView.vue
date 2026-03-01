@@ -18,15 +18,24 @@
           <RouterLink to="/about">Begin Journey</RouterLink>
           <span class="material-symbols-outlined"> airport_shuttle </span>
         </a>
+        <span class="tagline">Jess James & Matt | GatwickGo2026</span>
       </div>
       <div class="wrapper-minor">
-        <img src="../../public/img/bus.png" alt="Bus Skin" width="100%">
+        <img :src="`/img/${skin}.png`" alt="Bus Skin" width="100%">
       </div>
     </div>
   </main>
 </template>
 
-<!-- need to do images here in probs -->
+<script>
+export default {
+  name: "Main",
+  props: {
+    playerID: String,
+    skin: String,
+  },
+}
+</script>
 
 <style scoped>
 
@@ -111,5 +120,17 @@
   height: 1px;
   margin-top: 2.5%;
   margin-bottom: 15%;
+}
+
+.tagline {
+  position: absolute;
+  bottom: 24px;
+  left: 5%;
+  color: var(--text-muted);
+  margin-top: 8px;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin: 1% 0;
+  font-size: 12px;
 }
 </style>
