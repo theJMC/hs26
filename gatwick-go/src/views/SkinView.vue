@@ -11,17 +11,10 @@
       <div class="wrapper-minor">
 
         <div class="skin-carousel">
-            <div class="buy-slide slide">
-                <img :src="`/img/bus.png`" alt="Bus Skin" height="80%">
-                <button @click="buySkin"> SELECT </button>
-            </div>
-            <div class="current-slide slide"> 
-                <img :src="`/img/bus.png`" alt="Bus Skin" height="80%">
-                <button> SELECTED </button>
-            </div>
-            <div class="buy-slide slide">
-                <img :src="`/img/bus.png`" alt="Bus Skin" height="80%">
-                <button @click="buySkin"> SELECT </button>
+            <div v-for="skin in skins" :class="`${skin == playerSkin ? 'current-slide' : 'buy-slide'} slide`">
+                <img :src="`/img/${skin}.png`" alt="Bus Skin" height="80%">
+                <button v-if="skin == playerSkin"> SELECTED </button>
+                <button v-else @click="buySkin(skin)"> £0.99 </button>
             </div>
         </div>
 
@@ -39,6 +32,7 @@
         :skinName="skinName"
         :price="0.99"
         @close="showPay = false"
+        @success="selectSkinName"
     />
   </main>
 </template>
@@ -50,21 +44,28 @@ export default {
   name: "Skin",
   props: {
     playerID: String,
-    skin: String,
+    playerSkin: String,
   },
   components: {
     FakePay
   },
   data() {
     return {
+        //UPDATE THIS WHEN NEW SKINS ARE ADDED - *SHOULD* AUTO UPDATE CODE
+        skins: ['bus', 'school_bus', 'battle_bus', 'sab_bus'],
         showPay: false,
         skinName: 'Default Bus'
     }
   },
   methods: {
-    buySkin() {
+    buySkin(skinName) {
         this.showPay = true,
-        this.skinName = 'Skin Name'
+        this.skinName = skinName
+    },
+    selectSkinName() {
+        //JAMES TODO: API CALL TO UPDATE SKIN HERE
+        console.log(this.skinName, this.playerID)
+        this.$router.push('/')
     }
   }
 }

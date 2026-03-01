@@ -37,7 +37,7 @@ const router = createRouter({
       component: SkinView,
       props: { 
         'playerID': PLAYER_ID,
-        'skin': playerSkin,
+        'playerSkin': playerSkin,
       }
     },
   ],

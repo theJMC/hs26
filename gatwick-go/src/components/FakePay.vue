@@ -89,6 +89,7 @@ export default {
 
         setTimeout(() => {
           this.close()
+            this.$emit("success")
         }, 1200)
 
       }, 1500)
