@@ -11,12 +11,18 @@
       <div class="wrapper-minor">
 
         <div class="skin-carousel">
-            <div class="prev-slide slide"></div>
+            <div class="prev-slide slide">
+                <img :src="`/img/bus.png`" alt="Bus Skin" height="80%">
+                <button> SELECT </button>
+            </div>
             <div class="current-slide slide"> 
                 <img :src="`/img/bus.png`" alt="Bus Skin" height="80%">
                 <button> SELECTED </button>
             </div>
-            <div class="next-slide slide"></div>
+            <div class="next-slide slide">
+                <img :src="`/img/bus.png`" alt="Bus Skin" height="80%">
+                <button> SELECT </button>
+            </div>
         </div>
 
         <a href="#" class="start-button">
