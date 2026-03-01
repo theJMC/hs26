@@ -134,7 +134,7 @@ export default {
 
 .slide button {
     position: absolute;
-    bottom: 12px;
+    bottom: -24px;
     border-radius: 12px;
     background-color: var(--gatwick-blue-light);
     border: none;
@@ -229,7 +229,7 @@ export default {
 
 .tagline {
   position: absolute;
-  bottom: 24px;
+  bottom: 6px;
   left: 5%;
   color: var(--text-muted);
   margin-top: 8px;
