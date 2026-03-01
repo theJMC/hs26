@@ -60,6 +60,18 @@ def new_player_no_gate():
     })
     return {"message": f"Player {name} added successfully."}
 
+@app.route("/update_player_skin")
+def update_player():
+    name = request.args.get('name', default='Player', type=str)
+    skin = request.args.get('skin', default='bus', type=str)
+
+    for player in unassigned_players:
+        if player["name"] == name:
+            player["skin"] = skin
+            return {"message": f"Player {name} updated successfully."}
+
+    return {"message": f"Player {name} not found."}, 404
+
 @app.route("/<gate_id>/new_player")
 def new_player(gate_id):
     name = request.args.get('name', default='Player', type=str)

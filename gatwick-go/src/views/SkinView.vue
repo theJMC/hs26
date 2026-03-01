@@ -65,6 +65,17 @@ export default {
     },
     selectSkinName() {
         //JAMES TODO: API CALL TO UPDATE SKIN HERE
+        var url = `https://api.gatwickgo.uk/update_player_skin?name=${this.playerID}&skin=${this.skinName}`;
+          fetch(url)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            let responseData = response.json();
+            responseData.then(data => {
+              console.log(data);
+            })
+          })
         console.log(this.skinName, this.playerID)
 
         gameState.playerSkin = this.skinName
