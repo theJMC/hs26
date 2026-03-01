@@ -11,17 +11,17 @@
       <div class="wrapper-minor">
 
         <div class="skin-carousel">
-            <div class="prev-slide slide">
+            <div class="buy-slide slide">
                 <img :src="`/img/bus.png`" alt="Bus Skin" height="80%">
-                <button> SELECT </button>
+                <button @click="buySkin"> SELECT </button>
             </div>
             <div class="current-slide slide"> 
                 <img :src="`/img/bus.png`" alt="Bus Skin" height="80%">
                 <button> SELECTED </button>
             </div>
-            <div class="next-slide slide">
+            <div class="buy-slide slide">
                 <img :src="`/img/bus.png`" alt="Bus Skin" height="80%">
-                <button> SELECT </button>
+                <button @click="buySkin"> SELECT </button>
             </div>
         </div>
 
@@ -32,21 +32,45 @@
         <span class="tagline">Jess James & Matt | GatwickGo2026</span>
       </div>
     </div>
+
+    <FakePay
+        v-if="showPay"
+        :playerID="playerID"
+        :skinName="skinName"
+        :price="0.99"
+        @close="showPay = false"
+    />
   </main>
 </template>
 
 <script>
+import FakePay from '@/components/FakePay.vue';
+
 export default {
   name: "Skin",
   props: {
     playerID: String,
     skin: String,
   },
+  components: {
+    FakePay
+  },
+  data() {
+    return {
+        showPay: false,
+        skinName: 'Default Bus'
+    }
+  },
+  methods: {
+    buySkin() {
+        this.showPay = true,
+        this.skinName = 'Skin Name'
+    }
+  }
 }
 </script>
 
 <style scoped>
-
 .wrapper {
   background: linear-gradient(135deg, var(--gatwick-dark), var(--gatwick-navy));
   display: flex;
