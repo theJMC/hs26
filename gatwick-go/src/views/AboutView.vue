@@ -84,7 +84,7 @@ export default {
         p.background(200);
         p.push();
         p.translate(worldOffset.x, worldOffset.y);
-        p.image(bg, 0 ,0, 12800, 6400);
+        p.image(bg, 1250, 450, 12800, 6400);
         p.pop();
         p.fill(255, 0, 0, 127); // TEMP FOR COLLISION RECTANGLES
         // user bus
