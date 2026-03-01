@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
+import SkinView from '@/views/SkinView.vue'
 
 // const PLAYER_ID = crypto.randomUUID()
 const PLAYER_ID = "abc123" 
@@ -26,6 +27,15 @@ const router = createRouter({
         'skin': playerSkin,
         'boardingGroup': 'B',
         'players': []
+      }
+    },
+    {
+      path: '/skin',
+      name: 'skin',
+      component: SkinView,
+      props: { 
+        'playerID': PLAYER_ID,
+        'skin': playerSkin,
       }
     },
   ],
