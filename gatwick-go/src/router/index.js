@@ -10,6 +10,18 @@ export const gameState = {
   playerID: crypto.randomUUID()
 }
 
+var url = `https://api.gatwickgo.uk/new_player?name=${PLAYER_ID}&skin=${playerSkin}`;
+fetch(url)
+.then(response => {
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  let responseData = response.json();
+  responseData.then(data => {
+    console.log(data);
+  })
+})
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
