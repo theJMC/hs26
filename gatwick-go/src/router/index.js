@@ -2,13 +2,15 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
 import SkinView from '@/views/SkinView.vue'
+import GateView from '@/views/GateView.vue'
 
-const PLAYER_ID = crypto.randomUUID()
-// const PLAYER_ID = "abc123" 
-// let gateID = "h5"
-let playerSkin = 'bus'
+export const gameState = {
+  gateID: "h5",
+  playerSkin: "bus",
+  playerID: crypto.randomUUID()
+}
 
-var url = `https://api.gatwickgo.uk/new_player?name=${PLAYER_ID}&skin=${playerSkin}`;
+var url = `https://api.gatwickgo.uk/new_player?name=${gameState.playerID}&skin=${gameState.playerSkin}`;
 fetch(url)
 .then(response => {
   if (!response.ok) {
@@ -27,29 +29,37 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      props: { 
-        'skin': playerSkin,
-      }
+      props: () => ({
+        skin: gameState.playerSkin,
+      })
     },
     {
       path: '/about',
       name: 'about',
       component: AboutView,
-      props: { 
-        'playerID': PLAYER_ID,
-        // 'gateID': gateID,
-        'skin': playerSkin,
-        'boardingGroup': 'B',
-        'players': []
-      }
+      props: () => ({
+        playerID: gameState.playerID,
+        gateID: gameState.gateID,
+        skin: gameState.playerSkin,
+        boardingGroup: 'B',
+        players: []
+      })
     },
     {
       path: '/skin',
       name: 'skin',
       component: SkinView,
+      props: () => ({
+        playerID: gameState.playerID,
+        playerSkin: gameState.playerSkin,
+      })
+    },
+    {
+      path: '/gate',
+      name: 'gate',
+      component: GateView,
       props: { 
-        'playerID': PLAYER_ID,
-        'playerSkin': playerSkin,
+        'playerID': gameState.playerID,
       }
     },
   ],

@@ -15,7 +15,7 @@
         <div class="lines"></div>
 
         <a href="#" class="start-button">
-          <RouterLink to="/about">Begin Journey</RouterLink>
+          <RouterLink to="/gate">Begin Journey</RouterLink>
           <span class="material-symbols-outlined"> airport_shuttle </span>
         </a>
 
@@ -33,12 +33,25 @@
 </template>
 
 <script>
+import { gameState } from '@/router';
+
 export default {
   name: "Main",
   props: {
     playerID: String,
     skin: String,
   },
+  mounted() {
+      const element = document.documentElement; // whole page
+
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.webkitRequestFullscreen) { // Safari
+    element.webkitRequestFullscreen();
+  } else if (element.msRequestFullscreen) { // IE11
+    element.msRequestFullscreen();
+  }
+  }
 }
 </script>
 
