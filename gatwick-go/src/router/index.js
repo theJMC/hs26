@@ -10,7 +10,7 @@ export const gameState = {
   playerID: crypto.randomUUID()
 }
 
-var url = `https://api.gatwickgo.uk/new_player?name=${PLAYER_ID}&skin=${playerSkin}`;
+var url = `https://api.gatwickgo.uk/new_player?name=${gameState.playerID}&skin=${gameState.playerSkin}`;
 fetch(url)
 .then(response => {
   if (!response.ok) {
