@@ -14,9 +14,6 @@ def refresh_boarding_groups(gate_id):
     if all_players.get(gate_id) is None:
         all_players[gate_id] = []
         return
-    elif all_players[gate_id] == []:
-        all_players.pop(gate_id)
-        return
 
     all_players[gate_id].sort(key=lambda x: x["score"], reverse=True)
 
