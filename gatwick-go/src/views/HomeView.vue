@@ -175,12 +175,12 @@ export default {
   width: 100vw;
   height: 100vh;
   background: linear-gradient(135deg, var(--gatwick-dark), var(--gatwick-navy));
+  color: var(--text-muted);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: white;
   z-index: 9999;
   padding: 20px;
 }
