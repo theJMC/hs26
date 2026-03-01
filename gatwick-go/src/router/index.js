@@ -2,8 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
 
-// const PLAYER_ID = crypto.randomUUID()
-const PLAYER_ID = "abc123" 
+const PLAYER_ID = crypto.randomUUID()
+// const PLAYER_ID = "abc123" 
+let gateID = "h5"
 let playerSkin = 'bus'
 
 const router = createRouter({
@@ -23,6 +24,7 @@ const router = createRouter({
       component: AboutView,
       props: { 
         'playerID': PLAYER_ID,
+        'gateID': gateID,
         'skin': playerSkin,
         'boardingGroup': 'B',
         'players': []

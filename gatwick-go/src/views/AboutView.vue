@@ -14,6 +14,7 @@ export default {
   name: "P5Canvas",
   props: {
     playerID: String,
+    gateID: String,
     skin: String,
     boardingGroup: String,
     players: Array  
@@ -55,6 +56,16 @@ export default {
         p.rectMode(p.CENTER);
         p.imageMode(p.CENTER);
         p.angleMode(p.DEGREES);
+
+        var url = `https://api.gatwickgo.uk/${this.gateID}/new_player?name=${this.playerID}`;
+
+        fetch(url)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            console.log(response.json());
+          })
       };
 
       p.draw = () => {
@@ -73,8 +84,7 @@ export default {
         }
         if (Math.ceil(this.score) % 100 == 0 && Math.ceil(this.score) != 0) {
           //JAMES TODO: PUSH SCORE TO SERVER HERE (THIS SHOULD HAPPEN ONCE EVERY 40 SECONDS MAX RN AJUST THE 100 IF NEEDED <3)
-          var gate_id = "h5";
-          var url = `https://api.gatwickgo.uk/${gate_id}/data?name=${this.playerID}&score=${Math.ceil(this.score)}`;
+          var url = `https://api.gatwickgo.uk/${this.gateID}/data?name=${this.playerID}&score=${Math.ceil(this.score)}`;
           fetch(url)
           .then(response => {
             if (!response.ok) {
