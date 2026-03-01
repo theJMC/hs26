@@ -134,7 +134,7 @@ export default {
 
 .slide button {
     position: absolute;
-    bottom: 12px;
+    bottom: -24px;
     border-radius: 12px;
     background-color: var(--gatwick-blue-light);
     border: none;
