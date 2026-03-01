@@ -89,7 +89,21 @@ export default {
         p.fill(255, 0, 0, 127); // TEMP FOR COLLISION RECTANGLES
         // user bus
         //p.rect(p.width * (this.xAxis / 100), p.height * 0.75, 200, 300); // TEMP FOR COLLISION RECTANGLES
-        p.image(bus.reg, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
+        switch (this.playerHeading) {
+          case 'n':
+            p.image(bus.reg, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
+            break;
+          case 's':
+            p.image(bus.reg, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
+            break;
+          case 'e':
+            p.image(bus.right, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
+            break;
+          case 'w':
+            p.image(bus.left, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
+            break;
+        }
+        // p.image(bus.reg, p.width * (this.xAxis / 100), p.height * 0.75, 200, 300);
 
         
 
@@ -103,14 +117,14 @@ export default {
             worldOffset.y += 1
             break;
           case 's':
-              worldOffset.y -= 1
-              break;
+            worldOffset.y -= 1
+            break;
           case 'e':
-              worldOffset.x -= 1
-              break;
+            worldOffset.x -= 1
+            break;
           case 'w':
-              worldOffset.x += 1
-              break;
+            worldOffset.x += 1
+            break;
         }
 
         if (this.score <= 0) {
@@ -152,11 +166,37 @@ export default {
   methods: {
     goLeft() {
       // this.xAxis--
-      this.playerHeading = "w"
+      switch (this.playerHeading) {
+        case 'n':
+          this.playerHeading = "w"
+          break;
+        case 's':
+          this.playerHeading = "e"
+          break;
+        case 'e':
+          this.playerHeading = "n"
+          break;
+        case 'w':
+          this.playerHeading = "s"
+          break;
+      }
     },
     goRight() {
       // this.xAxis++
-      this.playerHeading = "e"
+      switch (this.playerHeading) {
+        case 'n':
+          this.playerHeading = "e"
+          break;
+        case 's':
+          this.playerHeading = "w"
+          break;
+        case 'e':
+          this.playerHeading = "s"
+          break;
+        case 'w':
+          this.playerHeading = "n"
+          break;
+      }
     },
     checkPlanes(p, loadedPlanes) {
       // Add plane
@@ -254,7 +294,7 @@ export default {
           }
 
           // Remove plane if off screen fully
-          if (plane.xAxis > p.width + 200 || plane.yAxis > p.height + 175) {
+          if ( (plane.xAxis > p.width + 200 || plane.yAxis > p.height + 175) || (plane.xAxis < -200 || plane.yAxis < -175) ) {
             const index = this.planes.indexOf(plane);
             if (index > -1) {
               this.planes.splice(index, 1);
