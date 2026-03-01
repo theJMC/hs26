@@ -8,6 +8,18 @@ const PLAYER_ID = crypto.randomUUID()
 // let gateID = "h5"
 let playerSkin = 'bus'
 
+var url = `https://api.gatwickgo.uk/new_player?name=${this.playerID}&skin=${playerSkin}`;
+fetch(url)
+.then(response => {
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  let responseData = response.json();
+  responseData.then(data => {
+    console.log(data);
+  })
+})
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
