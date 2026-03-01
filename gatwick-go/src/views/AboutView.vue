@@ -14,7 +14,7 @@ export default {
   name: "P5Canvas",
   props: {
     playerID: String,
-    // gateID: String,
+    gateID: String,
     skin: String,
     players: Array  
   },
@@ -25,7 +25,6 @@ export default {
       score: 0,
       planes: [],
       boardingGroup: "E",
-      gateID: "h5",
       MAX_PLANES: 1,
       PLANE_MINUS: 4,
       POINTS_PER_SECOND: 0.1,
@@ -39,9 +38,9 @@ export default {
 
       p.preload = () => {
         bus = {
-          reg: p.loadImage('../../img/bus.png'),
-          left: p.loadImage('../../img/bus_left.png'),
-          right: p.loadImage('../../img/bus_right.png')
+          reg: p.loadImage(`../../img/${this.skin}.png`),
+          left: p.loadImage(`../../img/${this.skin}_left.png`),
+          right: p.loadImage(`../../img/${this.skin}_right.png`)
         }
         planes = [
           p.loadImage('../../img/easyjet.png'),
@@ -52,12 +51,6 @@ export default {
       }
 
       p.setup = () => {
-
-        this.gateID = prompt("Enter gate ID (e.g. h5, a12, etc.)", "h5");
-        if (this.gateID == null || this.gateID.trim() === "") {
-          this.gateID = "h5"; // default value if user cancels or enters an empty string
-        }
-
         p.createCanvas(p.windowWidth - 24, p.windowHeight - 24);
         p.background(200);
         p.rectMode(p.CENTER);
@@ -280,7 +273,7 @@ export default {
 .score-boxes span {
   height: min-content;
   background: white;
-  font-size: 48px;
+  3rem;
   padding: 0 6px;
 }
 
@@ -297,7 +290,7 @@ export default {
   top: 120px;
   background: var(--gatwick-dark);
   color: white;
-  font-size: 60px;
+  3.75rem;
   width: max-content;
 }
 </style>

@@ -139,7 +139,7 @@ export default {
 }
 
 .demo-label {
-  font-size: 12px;
+  0.75rem;
   opacity: 0.5;
   text-align: center;
 }

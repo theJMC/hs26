@@ -15,7 +15,7 @@
         <div class="lines"></div>
 
         <a href="#" class="start-button">
-          <RouterLink to="/about">Begin Journey</RouterLink>
+          <RouterLink to="/gate">Begin Journey</RouterLink>
           <span class="material-symbols-outlined"> airport_shuttle </span>
         </a>
 
@@ -78,7 +78,7 @@ export default {
 }
 
 .logo {
-  font-size: 60px;
+  3.75rem;
   font-weight: bolder;
   letter-spacing: -1px;
   color: white;
@@ -103,7 +103,7 @@ export default {
   background: linear-gradient(90deg, var(--gatwick-blue), var(--gatwick-blue-light));
   border-radius: 40px;
   font-weight: 600;
-  font-size: 24px;
+  1.5rem;
   color: white;
   text-decoration: none;
   transition: 0.25s ease;
@@ -139,6 +139,6 @@ export default {
   font-size: 16px;
   text-transform: uppercase;
   margin: 1% 0;
-  font-size: 12px;
+  0.75rem;
 }
 </style>
