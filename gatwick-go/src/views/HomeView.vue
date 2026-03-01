@@ -42,8 +42,15 @@ export default {
     skin: String,
   },
   mounted() {
-    console.log(gameState)
-    console.log(this.skin)
+      const element = document.documentElement; // whole page
+
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.webkitRequestFullscreen) { // Safari
+    element.webkitRequestFullscreen();
+  } else if (element.msRequestFullscreen) { // IE11
+    element.msRequestFullscreen();
+  }
   }
 }
 </script>
