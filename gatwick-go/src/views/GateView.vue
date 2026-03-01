@@ -77,6 +77,7 @@ export default {
     height: 0;
     width: 100%;
     flex: 1;
+    gap: 12px;
     display: flex;
     flex-direction: column;
 }
@@ -198,14 +199,15 @@ export default {
 }
 
 .gate-input {
-    font-size: 25vh;
-    width: 300px;
+    font-size: 10rem;
+    width: 15rem;
+    text-align: center;
     margin: auto;
 }
 
 .tagline {
   position: absolute;
-  bottom: 24px;
+  bottom: 6px;
   left: 5%;
   color: var(--text-muted);
   margin-top: 8px;
