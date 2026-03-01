@@ -27,7 +27,7 @@
 
         <a href="#" class="start-button">
           <span class="material-symbols-outlined"> fast_rewind </span>
-          <RouterLink to="/about">Back to home</RouterLink>
+          <RouterLink to="/">Back to home</RouterLink>
         </a>
         <span class="tagline">Jess James & Matt | GatwickGo2026</span>
       </div>
