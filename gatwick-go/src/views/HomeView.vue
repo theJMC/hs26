@@ -33,25 +33,12 @@
 </template>
 
 <script>
-import { gameState } from '@/router';
-
 export default {
   name: "Main",
   props: {
     playerID: String,
     skin: String,
   },
-  mounted() {
-      const element = document.documentElement; // whole page
-
-  if (element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if (element.webkitRequestFullscreen) { // Safari
-    element.webkitRequestFullscreen();
-  } else if (element.msRequestFullscreen) { // IE11
-    element.msRequestFullscreen();
-  }
-  }
 }
 </script>
 
@@ -91,7 +78,7 @@ export default {
 }
 
 .logo {
-  font-size: 60px;
+  3.75rem;
   font-weight: bolder;
   letter-spacing: -1px;
   color: white;
@@ -116,7 +103,7 @@ export default {
   background: linear-gradient(90deg, var(--gatwick-blue), var(--gatwick-blue-light));
   border-radius: 40px;
   font-weight: 600;
-  font-size: 24px;
+  1.5rem;
   color: white;
   text-decoration: none;
   transition: 0.25s ease;
@@ -152,6 +139,6 @@ export default {
   font-size: 16px;
   text-transform: uppercase;
   margin: 1% 0;
-  font-size: 12px;
+  0.75rem;
 }
 </style>
