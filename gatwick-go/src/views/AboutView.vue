@@ -71,8 +71,11 @@ export default {
         if (this.score <= 0) {
           this.score = 0
         }
-        if ((this.score / 100) % 1 === 0) {
+        if (this.score % 100 == 0) {
           //JAMES TODO: PUSH SCORE TO SERVER HERE (THIS SHOULD HAPPEN ONCE EVERY 40 SECONDS MAX RN AJUST THE 100 IF NEEDED <3)
+          var gate_id = "h5";
+          var url = `https://api.gatwickgo.uk/${gate_id}/data?name=${this.playerID}&score=${Math.ceil(this.score)}`;
+          fetch(url)
           console.log(this.playerID)
           console.log(this.score)
         }
