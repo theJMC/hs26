@@ -15,7 +15,7 @@
         <div class="lines"></div>
 
         <a href="#" class="start-button">
-          <RouterLink to="/about">Begin Journey</RouterLink>
+          <RouterLink to="/gate">Begin Journey</RouterLink>
           <span class="material-symbols-outlined"> airport_shuttle </span>
         </a>
 

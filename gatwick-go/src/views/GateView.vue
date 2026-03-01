@@ -8,17 +8,22 @@
         </div>
         <div class="lines"></div>
       </div>
-      <div class="wrapper-minor">
 
-        <input class="gate-input" v-model="gateID" placeholder="H5" />
+    <form @submit.prevent="inputGate" class="wrapper-minor">
+        <input
+            class="gate-input"
+            v-model="gateID"
+            placeholder="H5"
+        />
 
-        <a @click="inputGate" class="start-button">
-          <span class="material-symbols-outlined"> thumb_up </span>
-          Confirm
-          <span class="material-symbols-outlined"> thumb_up </span>
-        </a>
-        <span class="tagline">Jess James & Matt | GatwickGo2026</span>
-      </div>
+        <button type="submit" class="start-button">
+            <span class="material-symbols-outlined">thumb_up</span>
+            Confirm
+            <span class="material-symbols-outlined">thumb_up</span>
+        </button>
+    </form>
+    
+    <span class="tagline">Jess James & Matt | GatwickGo2026</span>
     </div>
   </main>
 </template>
