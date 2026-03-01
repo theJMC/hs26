@@ -65,7 +65,7 @@ export default {
         p.imageMode(p.CENTER);
         p.angleMode(p.DEGREES);
 
-        worldOffset = p.createVector(0, 0);
+        worldOffset = p.createVector(-100, -100);
 
         playerPos = p.createVector(p.width / 2, p.height * 0.75);
 
@@ -84,7 +84,7 @@ export default {
         p.background(200);
         p.push();
         p.translate(worldOffset.x, worldOffset.y);
-        p.image(bg, 1250,450, 12800, 6400);
+        p.image(bg, 0 ,0, 12800, 6400);
         p.pop();
         p.fill(255, 0, 0, 127); // TEMP FOR COLLISION RECTANGLES
         // user bus
@@ -210,17 +210,9 @@ export default {
               break;
             case 'd':
               angle = 25;
-              if (this.playerHeading == "n" || this.playerHeading == "w") {
-                plane.xAxis+=this.PLANE_SPEED-1
-                plane.yAxis+=this.PLANE_SPEED-1
-              } else if (this.playerHeading == "s" || this.playerHeading == "e") {
-                plane.xAxis-=this.PLANE_SPEED-1
-                plane.yAxis-=this.PLANE_SPEED-1
-              } else {
-                plane.xAxis+=this.PLANE_SPEED
-                plane.yAxis+=this.PLANE_SPEED
-                break;
-              }
+              plane.xAxis+=this.PLANE_SPEED-1
+              plane.yAxis+=this.PLANE_SPEED-1
+              break;
           }
 
           // Draw plane with rotation
