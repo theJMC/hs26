@@ -53,7 +53,7 @@ export default {
   data() {
     return {
         //UPDATE THIS WHEN NEW SKINS ARE ADDED - *SHOULD* AUTO UPDATE CODE
-        skins: ['bus', 'school_bus', 'battle-bus'],
+        skins: ['bus', 'school-bus', 'battle-bus'],
         showPay: false,
         skinName: 'Default Bus'
     }
