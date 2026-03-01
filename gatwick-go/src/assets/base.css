@@ -30,9 +30,9 @@ html {
 }
 
 /* Smaller devices (iPhone, etc.) */
-@media (max-width: 480px) {
+@media (max-width: 900px) {
   html {
-    font-size: 14px; /* makes all rem smaller proportionally */
+    font-size: 10px; /* makes all rem smaller proportionally */
   }
 }
 

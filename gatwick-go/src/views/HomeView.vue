@@ -78,7 +78,7 @@ export default {
 }
 
 .logo {
-  3.75rem;
+  font-size: 3.75rem;
   font-weight: bolder;
   letter-spacing: -1px;
   color: white;
@@ -103,7 +103,7 @@ export default {
   background: linear-gradient(90deg, var(--gatwick-blue), var(--gatwick-blue-light));
   border-radius: 40px;
   font-weight: 600;
-  1.5rem;
+  font-size: 1.5rem;
   color: white;
   text-decoration: none;
   transition: 0.25s ease;
@@ -139,6 +139,6 @@ export default {
   font-size: 16px;
   text-transform: uppercase;
   margin: 1% 0;
-  0.75rem;
+ font-size:  0.75rem;
 }
 </style>
