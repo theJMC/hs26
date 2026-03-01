@@ -33,12 +33,18 @@
 </template>
 
 <script>
+import { gameState } from '@/router';
+
 export default {
   name: "Main",
   props: {
     playerID: String,
     skin: String,
   },
+  mounted() {
+    console.log(gameState)
+    console.log(this.skin)
+  }
 }
 </script>
 

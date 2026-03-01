@@ -3,74 +3,50 @@
     <div class="wrapper">
       <div class="wrapper-major">
         <div class="title-container">
-          <span class="title">wardrobe</span>
-          <span class="subtitle">select bus costume</span>
+          <span class="title">GATE</span>
+          <span class="subtitle">Enter your gate number (e.g. h5, a12, etc.)</span>
         </div>
         <div class="lines"></div>
       </div>
       <div class="wrapper-minor">
 
-        <div class="skin-carousel">
-            <div v-for="skin in skins" :class="`${skin == playerSkin ? 'current-slide' : 'buy-slide'} slide`">
-                <img :src="`/img/${skin}.png`" alt="Bus Skin" height="80%">
-                <button v-if="skin == playerSkin"> SELECTED </button>
-                <button v-else @click="buySkin(skin)"> £0.99 </button>
-            </div>
-        </div>
+        <input class="gate-input" v-model="gateID" placeholder="H5" />
 
-        <a href="#" class="start-button">
-          <span class="material-symbols-outlined"> fast_rewind </span>
-          <RouterLink to="/">Back to home</RouterLink>
+        <a @click="inputGate" class="start-button">
+          <span class="material-symbols-outlined"> thumb_up </span>
+          Confirm
+          <span class="material-symbols-outlined"> thumb_up </span>
         </a>
         <span class="tagline">Jess James & Matt | GatwickGo2026</span>
       </div>
     </div>
-
-    <FakePay
-        v-if="showPay"
-        :playerID="playerID"
-        :skinName="skinName"
-        :price="0.99"
-        @close="showPay = false"
-        @success="selectSkinName"
-    />
   </main>
 </template>
 
 <script>
-import FakePay from '@/components/FakePay.vue';
 import { gameState } from '@/router';
 
 export default {
-  name: "Skin",
+  name: "Gate",
   props: {
     playerID: String,
-    playerSkin: String,
-  },
-  components: {
-    FakePay
   },
   data() {
     return {
-        //UPDATE THIS WHEN NEW SKINS ARE ADDED - *SHOULD* AUTO UPDATE CODE
-        skins: ['bus', 'school_bus', 'battle-bus'],
-        showPay: false,
-        skinName: 'Default Bus'
+      gateID: ""
     }
   },
   methods: {
-    buySkin(skinName) {
-        this.showPay = true,
-        this.skinName = skinName
-    },
-    selectSkinName() {
-        //JAMES TODO: API CALL TO UPDATE SKIN HERE
-        console.log(this.skinName, this.playerID)
+    inputGate() {
+        let gate = this.gateID?.trim().toLowerCase()
 
-        gameState.playerSkin = this.skinName
-        console.log(gameState)
-        this.$router.push('/')
-    }
+        if (!gate) {
+        gate = "h5"
+        }
+
+        gameState.gateID = gate
+        this.$router.push({ name: "about" })
+    },
   }
 }
 </script>
@@ -182,10 +158,10 @@ export default {
 }
 
 .start-button {
-    position: absolute;
-    top: 25px;
   display: inline-flex;
   align-items: center;
+  width: min-content;
+  margin: auto;
   gap: 14px;
   padding: 12px 36px;
   background: linear-gradient(90deg, var(--gatwick-blue), var(--gatwick-blue-light));
@@ -214,6 +190,12 @@ export default {
   background-color: var(--gatwick-blue);
   height: 1px;
   margin-top: 2.5%;
+}
+
+.gate-input {
+    font-size: 25vh;
+    width: 300px;
+    margin: auto;
 }
 
 .tagline {
