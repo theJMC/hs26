@@ -13,6 +13,7 @@
 export default {
   name: "P5Canvas",
   props: {
+    playerID: String,
     skin: String,
     boardingGroup: String,
     players: Array  
@@ -69,6 +70,11 @@ export default {
         this.score+=this.POINTS_PER_SECOND
         if (this.score <= 0) {
           this.score = 0
+        }
+        if ((this.score / 100) % 1 === 0) {
+          //JAMES TODO: PUSH SCORE TO SERVER HERE (THIS SHOULD HAPPEN ONCE EVERY 40 SECONDS MAX RN AJUST THE 100 IF NEEDED <3)
+          console.log(this.playerID)
+          console.log(this.score)
         }
       };
     };
@@ -144,7 +150,7 @@ export default {
           p.image(plane.image, 0, 0, 450, 350);
           p.pop();
 
-          // Check collision
+          // Check collision: TODO UPDATE THIS LOGIC
           const busX = p.width * (this.xAxis / 100);
           const busY = p.height * 0.75;
           const busW = 200;
