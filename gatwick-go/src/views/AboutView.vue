@@ -33,6 +33,7 @@ export default {
     };
   },
   mounted() {
+    window.addEventListener('keydown', this.handleKeydown);
     const sketch = (p) => {
       let bus;
       let planes;
@@ -65,7 +66,7 @@ export default {
         p.imageMode(p.CENTER);
         p.angleMode(p.DEGREES);
 
-        worldOffset = p.createVector(-100, -100);
+        worldOffset = p.createVector(-700, -100);
 
         playerPos = p.createVector(p.width / 2, p.height * 0.75);
 
@@ -302,12 +303,20 @@ export default {
           }
         })
       }
-    }
+    },
+    handleKeydown(event) {
+      if (event.key === 'ArrowLeft') {
+        this.goLeft();
+      } else if (event.key === 'ArrowRight') {
+        this.goRight();
+      }
+    },
   },
   beforeUnmount() {
     if (this.p5Instance) {
       this.p5Instance.remove();
     }
+    window.removeEventListener('keydown', this.handleKeydown);
   }
 };
 </script>
