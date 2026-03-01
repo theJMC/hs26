@@ -18,6 +18,11 @@
           <RouterLink to="/about">Begin Journey</RouterLink>
           <span class="material-symbols-outlined"> airport_shuttle </span>
         </a>
+
+        <a href="#" class="start-button">
+          <RouterLink to="/skin">Customise Your Bus</RouterLink>
+          <span class="material-symbols-outlined"> palette </span>
+        </a>
         <span class="tagline">Jess James & Matt | GatwickGo2026</span>
       </div>
       <div class="wrapper-minor">
@@ -51,7 +56,9 @@ export default {
 }
 
 .wrapper-major {
-  flex: 1
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .wrapper-minor {
@@ -101,6 +108,7 @@ export default {
   text-decoration: none;
   transition: 0.25s ease;
   box-shadow: 0 6px 20px rgba(0,160,178,0.3);
+  width: max-content;
 }
 
 .start-button a {
