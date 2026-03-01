@@ -14,7 +14,7 @@ export default {
   name: "P5Canvas",
   props: {
     playerID: String,
-    gateID: String,
+    // gateID: String,
     skin: String,
     players: Array  
   },
@@ -25,6 +25,7 @@ export default {
       score: 0,
       planes: [],
       boardingGroup: "E",
+      gateID: "h5",
       MAX_PLANES: 1,
       PLANE_MINUS: 4,
       POINTS_PER_SECOND: 0.1,
@@ -51,6 +52,12 @@ export default {
       }
 
       p.setup = () => {
+
+        this.gateID = prompt("Enter gate ID (e.g. h5, a12, etc.)", "h5");
+        if (this.gateID == null || this.gateID.trim() === "") {
+          this.gateID = "h5"; // default value if user cancels or enters an empty string
+        }
+
         p.createCanvas(p.windowWidth - 24, p.windowHeight - 24);
         p.background(200);
         p.rectMode(p.CENTER);
