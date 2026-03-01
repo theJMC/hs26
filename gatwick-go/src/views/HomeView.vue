@@ -1,6 +1,13 @@
 <template>
   <main>
-    <div class="wrapper">
+    <!-- Rotate Overlay -->
+    <div v-if="isPortrait" class="rotate-overlay">
+      <span class="material-symbols-outlined rotate-icon">screen_rotation</span>
+      <h2>For the best experience, rotate your phone then refresh.</h2>
+    </div>
+
+    <!-- Actual Homepage -->
+    <div v-else class="wrapper">
       <div class="wrapper-major">
         <div class="logo-container">
           <span class="welcome">welcome to</span>
@@ -8,7 +15,8 @@
             <span>gatwick</span>
             <i>
               <img src="../../public/img/logo.png" alt="G" width="100%">
-              O!</i>
+              O!
+            </i>
           </div>
         </div>
 
@@ -31,15 +39,33 @@
     </div>
   </main>
 </template>
-
 <script>
+import { ref, onMounted, onUnmounted } from "vue";
+
 export default {
   name: "Main",
   props: {
     playerID: String,
     skin: String,
   },
-}
+  setup() {
+    const isPortrait = ref(window.innerHeight > window.innerWidth);
+
+    const checkOrientation = () => {
+      isPortrait.value = window.innerHeight > window.innerWidth;
+    };
+
+    onMounted(() => {
+      window.addEventListener("resize", checkOrientation);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener("resize", checkOrientation);
+    });
+
+    return { isPortrait };
+  },
+};
 </script>
 
 <style scoped>
@@ -78,7 +104,7 @@ export default {
 }
 
 .logo {
-  font-size: 3.75rem;
+  font-size: 60px;
   font-weight: bolder;
   letter-spacing: -1px;
   color: white;
@@ -103,7 +129,7 @@ export default {
   background: linear-gradient(90deg, var(--gatwick-blue), var(--gatwick-blue-light));
   border-radius: 40px;
   font-weight: 600;
-  font-size: 1.5rem;
+  font-size: 24px;
   color: white;
   text-decoration: none;
   transition: 0.25s ease;
@@ -132,13 +158,41 @@ export default {
 
 .tagline {
   position: absolute;
-  bottom: 6px;
+  bottom: 24px;
   left: 5%;
   color: var(--text-muted);
   margin-top: 8px;
   font-size: 16px;
   text-transform: uppercase;
   margin: 1% 0;
- font-size:  0.75rem;
+  font-size: 12px;
+}
+
+.rotate-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, var(--gatwick-dark), var(--gatwick-navy));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.rotate-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
