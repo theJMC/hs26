@@ -18,7 +18,7 @@ const router = createRouter({
       name: 'about',
       component: AboutView,
       props: { 
-        'playerID': 'abc123',
+        'playerID': crypto.randomUUID(),
         'skin': '',
         'boardingGroup': 'B',
         'players': []
