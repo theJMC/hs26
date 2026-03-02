@@ -30,3 +30,5 @@ A whole lot about Gatwick airport!!
 
 ## What's next for GatwickGo
 With some polishing, this game is very close to our initial vision. There's not that much more to be done!
+
+Read more about it (including Screenshots) at our Devpost Submission [here](https://thejmc.link/hs26-devpost)
