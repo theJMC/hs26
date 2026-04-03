@@ -2,5 +2,14 @@ name = "gatwick-api"
 main = "src/index.js"
 compatibility_date = "2026-04-03"
 
+[durable_objects]
+bindings = [
+	{ name = "GATWICK_STATE", class_name = "GatwickStateDO" }
+]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["GatwickStateDO"]
+
 [vars]
 NUM_PER_BOARDING_GROUP = "5"

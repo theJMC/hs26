@@ -1,7 +1,8 @@
 const DEFAULT_NUM_PER_BOARDING_GROUP = 5;
 const GROUPS = ["A", "B", "C", "D", "E"];
+const ALLOWED_ORIGINS = new Set(["https://gatwickgo.uk"]);
 
-const state = {
+const INITIAL_STATE = {
   allPlayers: {},
   unassignedPlayers: [
     {
@@ -13,12 +14,40 @@ const state = {
   ],
 };
 
-function json(data, init = {}) {
+function cloneInitialState() {
+  return JSON.parse(JSON.stringify(INITIAL_STATE));
+}
+
+function getAllowedOrigin(request) {
+  const origin = request.headers.get("Origin");
+  if (!origin || !ALLOWED_ORIGINS.has(origin)) {
+    return null;
+  }
+
+  return origin;
+}
+
+function applyCorsHeaders(headers, request) {
+  const origin = getAllowedOrigin(request);
+  if (!origin) {
+    return;
+  }
+
+  headers.set("Access-Control-Allow-Origin", origin);
+  headers.set("Access-Control-Allow-Methods", "GET,DELETE,OPTIONS");
+  headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  headers.set("Access-Control-Max-Age", "86400");
+  headers.set("Vary", "Origin");
+}
+
+function json(data, request, init = {}) {
+  const headers = new Headers(init.headers ?? {});
+  headers.set("content-type", "application/json; charset=utf-8");
+  applyCorsHeaders(headers, request);
+
   return new Response(JSON.stringify(data), {
-    headers: {
-      "content-type": "application/json; charset=utf-8",
-    },
     ...init,
+    headers,
   });
 }
 
@@ -38,16 +67,16 @@ function getNumPerBoardingGroup(env) {
     : DEFAULT_NUM_PER_BOARDING_GROUP;
 }
 
-function refreshBoardingGroups(gateId, env) {
-  if (!state.allPlayers[gateId]) {
-    state.allPlayers[gateId] = [];
+function refreshBoardingGroups(appState, gateId, env) {
+  if (!appState.allPlayers[gateId]) {
+    appState.allPlayers[gateId] = [];
     return;
   }
 
-  state.allPlayers[gateId].sort((a, b) => b.score - a.score);
+  appState.allPlayers[gateId].sort((a, b) => b.score - a.score);
   const numPerBoardingGroup = getNumPerBoardingGroup(env);
 
-  state.allPlayers[gateId].forEach((player, index) => {
+  appState.allPlayers[gateId].forEach((player, index) => {
     let groupIndex = Math.floor(index / numPerBoardingGroup);
     if (groupIndex >= GROUPS.length) {
       groupIndex = GROUPS.length - 1;
@@ -57,8 +86,8 @@ function refreshBoardingGroups(gateId, env) {
   });
 }
 
-function renderAdminPage() {
-  const gates = Object.keys(state.allPlayers);
+function renderAdminPage(appState) {
+  const gates = Object.keys(appState.allPlayers);
 
   const gateRows = gates
     .map(
@@ -75,7 +104,7 @@ function renderAdminPage() {
     )
     .join("\n");
 
-  const playerRows = state.unassignedPlayers
+  const playerRows = appState.unassignedPlayers
     .map(
       (player) => `
             <tr id="player-row-${escapeHtml(player.name)}">
@@ -146,12 +175,12 @@ ${playerRows}
             if (!confirm("Are you sure you want to decommission this gate?")) return;
 
             try {
-          const response = await fetch('/' + gateId + '/delete', {
+              const response = await fetch('/' + gateId + '/delete', {
                     method: 'DELETE'
                 });
 
                 if (response.ok) {
-            const row = document.getElementById('gate-row-' + gateId);
+                    const row = document.getElementById('gate-row-' + gateId);
                     row?.remove();
                 } else {
                     alert("Failed to delete gate.");
@@ -171,7 +200,7 @@ ${playerRows}
                 });
 
                 if (response.ok) {
-                const row = document.getElementById('player-row-' + playerName);
+                    const row = document.getElementById('player-row-' + playerName);
                     row?.remove();
                 } else {
                     alert("Failed to delete player.");
@@ -192,8 +221,8 @@ ${playerRows}
   });
 }
 
-function renderGatePage(gateId) {
-  const gatePlayers = state.allPlayers[gateId] ?? [];
+function renderGatePage(appState, gateId) {
+  const gatePlayers = appState.allPlayers[gateId] ?? [];
 
   const playerRows = gatePlayers.length
     ? gatePlayers
@@ -271,19 +300,47 @@ function getIntParam(url, key, fallback) {
   return parsed;
 }
 
-export default {
-  async fetch(request, env) {
+export class GatwickStateDO {
+  constructor(state, env) {
+    this.storage = state.storage;
+    this.env = env;
+  }
+
+  async getState() {
+    const saved = await this.storage.get("state");
+    if (saved) {
+      return saved;
+    }
+
+    const seeded = cloneInitialState();
+    await this.storage.put("state", seeded);
+    return seeded;
+  }
+
+  async saveState(appState) {
+    await this.storage.put("state", appState);
+  }
+
+  async fetch(request) {
     const url = new URL(request.url);
     const method = request.method.toUpperCase();
 
+    if (method === "OPTIONS") {
+      const headers = new Headers();
+      applyCorsHeaders(headers, request);
+      return new Response(null, { status: 204, headers });
+    }
+
+    const appState = await this.getState();
+
     if (method === "GET" && url.pathname === "/") {
-      return renderAdminPage();
+      return renderAdminPage(appState);
     }
 
     const gatePageMatch = url.pathname.match(/^\/gate\/([^/]+)$/);
     if (method === "GET" && gatePageMatch) {
       const gateId = decodeURIComponent(gatePageMatch[1]);
-      return renderGatePage(gateId);
+      return renderGatePage(appState, gateId);
     }
 
     if (method === "GET" && url.pathname === "/new_player") {
@@ -291,27 +348,28 @@ export default {
       const score = getIntParam(url, "score", 0);
       const skin = getStringParam(url, "skin", "bus");
 
-      state.unassignedPlayers.push({
+      appState.unassignedPlayers.push({
         name,
         score,
         skin,
         boarding_group: "E",
       });
-
-      return json({ message: `Player ${name} added successfully.` });
+      await this.saveState(appState);
+      return json({ message: `Player ${name} added successfully.` }, request);
     }
 
     if (method === "GET" && url.pathname === "/update_player_skin") {
       const name = getStringParam(url, "name", "Player");
       const skin = getStringParam(url, "skin", "bus");
 
-      const player = state.unassignedPlayers.find((candidate) => candidate.name === name);
+      const player = appState.unassignedPlayers.find((candidate) => candidate.name === name);
       if (!player) {
-        return json({ message: `Player ${name} not found.` }, { status: 404 });
+        return json({ message: `Player ${name} not found.` }, request, { status: 404 });
       }
 
       player.skin = skin;
-      return json({ message: `Player ${name} updated successfully.` });
+      await this.saveState(appState);
+      return json({ message: `Player ${name} updated successfully.` }, request);
     }
 
     const newPlayerMatch = url.pathname.match(/^\/([^/]+)\/new_player$/);
@@ -321,48 +379,52 @@ export default {
       const score = getIntParam(url, "score", 0);
       const skin = getStringParam(url, "skin", "bus");
 
-      if (!state.allPlayers[gateId]) {
-        state.allPlayers[gateId] = [];
+      if (!appState.allPlayers[gateId]) {
+        appState.allPlayers[gateId] = [];
       }
 
-      const unassignedIndex = state.unassignedPlayers.findIndex((player) => player.name === name);
+      const unassignedIndex = appState.unassignedPlayers.findIndex((player) => player.name === name);
       if (unassignedIndex !== -1) {
-        const player = state.unassignedPlayers[unassignedIndex];
+        const player = appState.unassignedPlayers[unassignedIndex];
         player.score = score;
         player.skin = skin;
-        state.allPlayers[gateId].push(player);
-        state.unassignedPlayers.splice(unassignedIndex, 1);
-        return json({ message: `Player ${name} added successfully.` });
+        appState.allPlayers[gateId].push(player);
+        appState.unassignedPlayers.splice(unassignedIndex, 1);
+        await this.saveState(appState);
+        return json({ message: `Player ${name} added successfully.` }, request);
       }
 
-      state.allPlayers[gateId].push({
+      appState.allPlayers[gateId].push({
         name,
         score,
         skin,
       });
-      return json({ message: `Player ${name} added successfully.` });
+      await this.saveState(appState);
+      return json({ message: `Player ${name} added successfully.` }, request);
     }
 
     const deleteGateMatch = url.pathname.match(/^\/([^/]+)\/delete$/);
     if (method === "DELETE" && deleteGateMatch) {
       const gateId = decodeURIComponent(deleteGateMatch[1]);
-      if (state.allPlayers[gateId]) {
-        delete state.allPlayers[gateId];
+      if (appState.allPlayers[gateId]) {
+        delete appState.allPlayers[gateId];
+        await this.saveState(appState);
       }
 
-      return json({ message: `Gate ${gateId} deleted successfully.` });
+      return json({ message: `Gate ${gateId} deleted successfully.` }, request);
     }
 
     const deletePlayerMatch = url.pathname.match(/^\/unassigned_players\/([^/]+)\/delete$/);
     if (method === "DELETE" && deletePlayerMatch) {
       const playerName = decodeURIComponent(deletePlayerMatch[1]);
-      const index = state.unassignedPlayers.findIndex((player) => player.name === playerName);
+      const index = appState.unassignedPlayers.findIndex((player) => player.name === playerName);
       if (index === -1) {
-        return json({ message: `Player ${playerName} not found.` }, { status: 404 });
+        return json({ message: `Player ${playerName} not found.` }, request, { status: 404 });
       }
 
-      state.unassignedPlayers.splice(index, 1);
-      return json({ message: `Player ${playerName} deleted successfully.` });
+      appState.unassignedPlayers.splice(index, 1);
+      await this.saveState(appState);
+      return json({ message: `Player ${playerName} deleted successfully.` }, request);
     }
 
     const dataMatch = url.pathname.match(/^\/([^/]+)\/data$/);
@@ -372,22 +434,36 @@ export default {
       const score = getIntParam(url, "score", 0);
       const skin = getStringParam(url, "skin", "bus");
 
-      refreshBoardingGroups(gateId, env);
+      refreshBoardingGroups(appState, gateId, this.env);
 
-      const player = state.allPlayers[gateId].find((candidate) => candidate.name === name);
+      const gatePlayers = appState.allPlayers[gateId] ?? [];
+      const player = gatePlayers.find((candidate) => candidate.name === name);
       if (!player) {
-        return json({ error: "Player not found" }, { status: 404 });
+        await this.saveState(appState);
+        return json({ error: "Player not found" }, request, { status: 404 });
       }
 
       player.score = score;
       player.skin = skin;
+      await this.saveState(appState);
 
-      return json({
-        boarding_group: player.boarding_group,
-        players: state.allPlayers[gateId],
-      });
+      return json(
+        {
+          boarding_group: player.boarding_group,
+          players: appState.allPlayers[gateId],
+        },
+        request
+      );
     }
 
     return new Response("Not found", { status: 404 });
+  }
+}
+
+export default {
+  async fetch(request, env) {
+    const id = env.GATWICK_STATE.idFromName("global");
+    const stub = env.GATWICK_STATE.get(id);
+    return stub.fetch(request);
   },
 };
