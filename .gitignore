@@ -1,2 +1,5 @@
 *.af
 *.af~lock~
+
+**/node_modules
+**/.wrangler

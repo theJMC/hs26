@@ -1,0 +1,6 @@
+name = "gatwick-api"
+main = "src/index.js"
+compatibility_date = "2026-04-03"
+
+[vars]
+NUM_PER_BOARDING_GROUP = "5"
